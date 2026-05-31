@@ -1,0 +1,18 @@
+{
+  "id": "test-session-1780190293895",
+  "createdAt": "2026-05-31T01:18:13.895Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello",
+      "timestamp": "2026-05-31T01:18:13.895Z",
+      "status": "done"
+    },
+    {
+      "role": "assistant",
+      "content": "Hi",
+      "timestamp": "2026-05-31T01:18:13.895Z",
+      "status": "done"
+    }
+  ]
+}
