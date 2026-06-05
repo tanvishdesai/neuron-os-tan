@@ -48,3 +48,7 @@ dashboard/       # Web frontend (React 19 + Vite + Tailwind)
 - Log file output via `AEGIS_LOG_FILE` with 10MB rotation
 - Telemetry opt-in via `AEGIS_TELEMETRY=1` env var
 - .env files auto-loaded from project root on startup
+
+## 2026-06-04T16:13:50.885Z
+
+E2E audit test entry
