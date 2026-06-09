@@ -1,6 +1,7 @@
 import type { Command } from "commander"
 import { theme } from "../theme"
 import { showBanner } from "../banner"
+import { keepAlive } from "../keep-alive"
 import { credentialVault } from "../../vault"
 import { createWhatsAppAdapter } from "../../adapters"
 
@@ -51,12 +52,8 @@ async function handleWhatsApp(opts: {
   console.log(theme.success("  ✓ WhatsApp adapter is running"))
   console.log(theme.dim("  Press Ctrl+C to stop\n"))
 
-  await new Promise<void>(() => {
-    function handleSignal() {
-      console.log(theme.warn("\n  Stopping WhatsApp adapter…"))
-      adapter.stop().then(() => process.exit(0)).catch(() => process.exit(1))
-    }
-    process.on("SIGINT", handleSignal)
-    process.on("SIGTERM", handleSignal)
+  await keepAlive(async () => {
+    console.log(theme.warn("\n  Stopping WhatsApp adapter…"))
+    await adapter.stop()
   })
 }

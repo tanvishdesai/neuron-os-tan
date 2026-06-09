@@ -1,5 +1,6 @@
 import type { Command } from "commander"
 import { theme } from "../theme"
+import { keepAlive } from "../keep-alive"
 import { agentManager } from "../../agent/manager"
 import {
   getAgentType,
@@ -223,15 +224,9 @@ export function registerAgent(program: Command) {
         console.log(theme.dim("  (following — press Ctrl+C to stop)"))
         const interval = setInterval(printLogs, 1_000)
 
-        const handleSignal = () => {
+        await keepAlive(() => {
           clearInterval(interval)
-          process.exit(0)
-        }
-        process.on("SIGINT", handleSignal)
-        process.on("SIGTERM", handleSignal)
-
-        // Keep alive
-        await new Promise(() => {})
+        })
       }
     })
 

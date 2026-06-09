@@ -2,6 +2,7 @@ import type { Command } from "commander"
 import os from "os"
 import { theme } from "../theme"
 import { showBanner } from "../banner"
+import { keepAlive } from "../keep-alive"
 import { agentManager } from "../../agent/manager"
 import { getVersion } from "../../version"
 import { existsSync, statSync } from "node:fs"
@@ -129,8 +130,10 @@ async function handleStatus(opts: { json?: boolean; watch?: boolean }) {
       console.log(theme.muted("\n  Watching — Ctrl+C to stop"))
     }
     render()
-    setInterval(render, 2000)
-    await new Promise(() => {}) // keep alive
+    const interval = setInterval(render, 2000)
+    await keepAlive(() => {
+      clearInterval(interval)
+    })
     return
   }
 

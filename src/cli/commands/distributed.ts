@@ -1,5 +1,6 @@
 import type { Command } from "commander"
 import { theme } from "../theme"
+import { keepAlive } from "../keep-alive"
 import { hostname } from "node:os"
 
 export function registerDistributed(program: Command) {
@@ -66,21 +67,14 @@ async function handleStart(opts: { port?: string; role?: string; leader?: string
   console.log(`    ${theme.bold("Port:")}     ${theme.dim(String(local.port))}`)
   console.log()
 
-  // Handle graceful shutdown
-  async function shutdownDistributed() {
+  await keepAlive(async () => {
     console.log(theme.warn("\n  Shutting down distributed node..."))
     try {
       await pool.stop()
     } catch {
       /* ignore pool stop failure */
     }
-    process.exit(0)
-  }
-  process.on("SIGINT", shutdownDistributed)
-  process.on("SIGTERM", shutdownDistributed)
-
-  // Keep alive
-  await new Promise(() => {})
+  })
 }
 
 async function handleStatus() {
